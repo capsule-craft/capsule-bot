@@ -1,0 +1,12 @@
+[package]
+name = "DemoEx"
+version = "0.0.1"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "devnet" }
+SuiUtils = { git = "https://github.com/capsule-craft/capsules.git", subdir = "packages/sui_utils", rev = "testnet" }
+Ownership = { git = "https://github.com/capsule-craft/capsules.git", subdir = "packages/ownership", rev = "testnet" }
+TransferSystem = { git = "https://github.com/capsule-craft/capsules.git", subdir = "packages/transfer_system", rev = "testnet" }
+
+[addresses]
+demo_ex =  "0x0"
