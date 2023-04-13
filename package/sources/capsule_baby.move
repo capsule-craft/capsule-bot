@@ -23,8 +23,8 @@ module demo_ex::capsule_baby {
 
     fun init(genesis: CAPSULE_BABY, ctx: &mut TxContext) {
         let sender = tx_context::sender(ctx);
-        let royalty_bps = 10000u16;
-        let marketplace_fee_bps = 3000u16;
+        let royalty_bps = 1000u16;
+        let marketplace_fee_bps = 200u16;
 
         let receipt = publish_receipt::claim(&genesis, ctx);
 
