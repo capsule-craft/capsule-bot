@@ -41,7 +41,13 @@ module capsule_baby::market {
         market_account::create(ctx)
     }
 
-    public entry fun create_sell_offer<C>(registry: &mut Registry, capsule_baby: &mut CapsuleBaby, royalty: &Royalty<CapsuleBaby>, price: u64, ctx: &mut TxContext) {
+    public entry fun create_sell_offer<C>(
+        registry: &mut Registry,
+        capsule_baby: &mut CapsuleBaby,
+        royalty: &Royalty<CapsuleBaby>,
+        price: u64,
+        ctx: &mut TxContext
+    ) {
         let uid = capsule_baby::extend(capsule_baby);
         let sender = tx_context::sender(ctx);
         let auth = tx_authority::begin(ctx);
@@ -57,7 +63,14 @@ module capsule_baby::market {
         vector::push_back(&mut registry.sell_offers, offer);
     }
 
-    public entry fun create_buy_offer<C>(registry: &mut Registry, capsule_baby: &mut CapsuleBaby, account: &mut MarketAccount, royalty: &Royalty<CapsuleBaby>, price: u64, ctx: &mut TxContext) {
+    public entry fun create_buy_offer<C>(
+        registry: &mut Registry, \
+        capsule_baby: &mut CapsuleBaby, \
+        account: &mut MarketAccount, \
+        royalty: &Royalty<CapsuleBaby>, \
+        price: u64,
+        ctx: &mut TxContext
+    ) {
         let uid = capsule_baby::extend(capsule_baby);
         let sender = tx_context::sender(ctx);
         let auth = tx_authority::begin(ctx);
