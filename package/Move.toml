@@ -1,5 +1,5 @@
 [package]
-name = "DemoEx"
+name = "CapsuleBaby"
 version = "0.0.1"
 
 [dependencies]
@@ -9,4 +9,4 @@ Ownership = { git = "https://github.com/capsule-craft/capsules.git", subdir = "p
 TransferSystem = { git = "https://github.com/capsule-craft/capsules.git", subdir = "packages/transfer_system", rev = "testnet" }
 
 [addresses]
-demo_ex =  "0x0"
+capsule_baby =  "0x0"

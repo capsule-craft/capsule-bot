@@ -1,4 +1,4 @@
-module demo_ex::capsule_baby {
+module capsule_baby::capsule_baby {
     use std::string::{Self, String};
 
     use sui::object::{Self, UID};
