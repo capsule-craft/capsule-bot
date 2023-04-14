@@ -1,110 +1,42 @@
 use std::str::FromStr;
 
 use anyhow::Result;
-// use serde_json::{json, to_string_pretty};
-use shared_crypto::intent::{Intent, IntentMessage};
-use sui_sdk::{
-    rpc_types::SuiTransactionBlockResponseOptions,
-    types::{
-        base_types::SuiAddress,
-        crypto::{Signature, SuiKeyPair},
-        messages::Transaction,
-    },
-    SuiClientBuilder,
-};
+use sui_sdk::types::crypto::SuiKeyPair;
 
 use tokio::time;
 
+use crate::strategy::Strategy;
+
 pub struct Bot {
     interval: u64,
-    keypair: SuiKeyPair,
+    _keypair: SuiKeyPair,
+    strategy: Strategy,
 }
 
 impl Bot {
     pub fn new(interval: u64, pk: &str) -> Result<Self> {
         let bot = Self {
             interval,
-            keypair: SuiKeyPair::from_str(pk).unwrap(),
+            _keypair: SuiKeyPair::from_str(pk).expect("Unable to parse pk"),
+            strategy: Strategy::package(
+                "0x7a21bdbf402b2807ba8d92fac6fdf8a1278c6568ac4965752b45246580a79a17",
+                "0xdb9e28d8ca84d419fedd2b1891481f19901deffdba50377c181194895a26609b",
+            )?,
         };
 
         Ok(bot)
     }
 
-    pub async fn start(&self) {
+    pub async fn start(&self) -> Result<()> {
         let duration = time::Duration::from_secs(self.interval);
         let mut interval = time::interval(duration);
 
-        let address: SuiAddress = (&self.keypair.public()).into();
-        let client = SuiClientBuilder::default()
-            .build("https://fullnode.testnet.sui.io:443")
-            .await
-            .unwrap();
-        let client_coin_read = client.coin_read_api();
-
-        let coins = client_coin_read
-            .get_all_coins(address, None, None)
-            .await
-            .unwrap();
-
-        let coin = coins.data.get(0).unwrap();
-
-        let txb = client.transaction_builder();
-        let data = txb
-            .transfer_object(
-                address,
-                coin.coin_object_id,
-                None,
-                20000000,
-                SuiAddress::from_str(
-                    "0x02be9f4658200072e5c4e48a8eb25a770644d8ecba6f439740893d20b67b674e",
-                )
-                .unwrap(),
-            )
-            .await
-            .unwrap();
-
-        let signature = Signature::new_secure(
-            &IntentMessage::new(Intent::sui_transaction(), &data),
-            &self.keypair,
-        );
-
-        let r = client
-            .quorum_driver()
-            .execute_transaction_block(
-                Transaction::from_data(data, Intent::sui_transaction(), vec![signature])
-                    .verify()
-                    .unwrap(),
-                SuiTransactionBlockResponseOptions::default(),
-                None,
-            )
-            .await
-            .unwrap();
-
-        println!("{:?}", r);
-
-        // println!("{}", to_string_pretty(&json!(coins)).unwrap());
-
         loop {
             interval.tick().await;
+
+            match &self.strategy {
+                Strategy::Package(package) => package.buy_cheapest_item().await?,
+            };
         }
     }
-
-    // async fn get_balance(&self, address: &str) -> Vec<SuiObjectResponse> {
-    //     let builder = SuiClientBuilder::default();
-    //     let client = builder
-    //         .build("https://fullnode.devnet.sui.io:443")
-    //         .await
-    //         .unwrap();
-
-    //     let intent = IntentMessage::new(Intent::sui_transaction(), "value");
-    //     Signature::new_secure(&intent, &self.keypair);
-
-    //     let resp = client
-    //         .read_api()
-    //         .get_owned_objects(SuiAddress::from_str(address).unwrap(), None, None, None)
-    //         .await
-    //         .unwrap();
-
-    //     resp.data
-    // }
 }

@@ -9,3 +9,4 @@ sui-sdk = { git = "https://github.com/MystenLabs/sui", tag = "devnet-0.31.0" }
 shared-crypto = { git = "https://github.com/MystenLabs/sui", tag = "devnet-0.31.0" }
 serde_json = "1.0.96"
 anyhow = "1.0.70"
+serde = "1.0.160"
