@@ -46,4 +46,8 @@ module demo_ex::capsule_baby {
 
         transfer::share_object(capsule_baby)
     }
+
+    public fun extend(self: &mut CapsuleBaby): &mut UID {
+        &mut self.id
+    }
 }
