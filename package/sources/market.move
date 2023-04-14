@@ -64,10 +64,10 @@ module capsule_baby::market {
     }
 
     public entry fun create_buy_offer<C>(
-        registry: &mut Registry, \
-        capsule_baby: &mut CapsuleBaby, \
-        account: &mut MarketAccount, \
-        royalty: &Royalty<CapsuleBaby>, \
+        registry: &mut Registry,
+        capsule_baby: &mut CapsuleBaby,
+        account: &mut MarketAccount,
+        royalty: &Royalty<CapsuleBaby>,
         price: u64,
         ctx: &mut TxContext
     ) {
