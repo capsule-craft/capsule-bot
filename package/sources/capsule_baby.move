@@ -32,7 +32,7 @@ module demo_ex::capsule_baby {
         transfer::public_transfer(receipt, sender)
     }
 
-    fun create(name: vector<u8>, ctx: &mut TxContext) {
+    public entry fun create(name: vector<u8>, ctx: &mut TxContext) {
         let capsule_baby = CapsuleBaby {
             id: object::new(ctx),
             name: string::utf8(name)
