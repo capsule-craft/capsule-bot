@@ -22,9 +22,9 @@ module demo_ex::capsule_baby {
     struct CAPSULE_BABY has drop {}
 
     fun init(genesis: CAPSULE_BABY, ctx: &mut TxContext) {
-        let sender = tx_context::sender(ctx);
         let royalty_bps = 1000u16;
         let marketplace_fee_bps = 200u16;
+        let sender = tx_context::sender(ctx);
 
         let receipt = publish_receipt::claim(&genesis, ctx);
 
@@ -46,7 +46,4 @@ module demo_ex::capsule_baby {
 
         transfer::share_object(capsule_baby)
     }
-
-
-    public fun create_offer() {}
 }
